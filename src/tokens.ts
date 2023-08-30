@@ -50,16 +50,11 @@ export const refreshToken = async () => {
     {
       grant_type: "refresh_token",
       refresh_token: refreshToken,
+      client_id: 'mibWeb',
     }
   );
 
   console.log(url);
-
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject("timeout");
-    }, 10000);
-  });
 
   return await fetch(url, {
     method: "POST",
