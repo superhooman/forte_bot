@@ -1,0 +1,28 @@
+{
+  "name": "check_pcc",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node --experimental-specifier-resolution=node --loader ts-node/esm src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2",
+    "telegraf": "^4.12.2",
+    "ts-node": "^10.9.1",
+    "urlcat": "^3.1.0",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "concurrently": "^8.2.0",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.1.0",
+    "typescript": "^5.1.6"
+  }
+}
