@@ -8,6 +8,6 @@ export const start = (bot: Telegraf<BaseBotContext>) => {
 
         await ctx.telegram.sendChatAction(chatId, "typing");
 
-        await ctx.reply("Welcome to the Forte bot for Aslan!", mainMenu);
+        await ctx.reply("Welcome to the Forte bot for Aslan!\nUse keyboard of /check command", mainMenu);
     });
 };

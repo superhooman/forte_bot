@@ -6,4 +6,4 @@ export const GO_BACK = "Go back";
 
 export const mainMenu = Markup.keyboard([
     [CHECK_BALANCE],
-]).oneTime().resize();
+]).resize();
