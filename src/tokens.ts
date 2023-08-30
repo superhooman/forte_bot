@@ -26,7 +26,7 @@ export const setToken = (
 };
 
 export const setTokenData = (data: TokenResponse) => {
-  console.log('setTokenData', data);
+  console.log('setTokenData');
   fs.writeFileSync(
     PATH,
     JSON.stringify(
@@ -45,27 +45,20 @@ export const refreshToken = async () => {
 
   const refreshToken = data["refresh_token"] as string;
 
-  const url = urlcat(
-    "https://id.forte.kz/auth/realms/mainRealm/protocol/openid-connect/token",
-    {
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-      client_id: 'mibWeb',
-    }
-  );
-
-  console.log(url);
-
-  return await fetch(url, {
+  return await fetch("https://id.forte.kz/auth/realms/mainRealm/protocol/openid-connect/token", {
     method: "POST",
+    body: `grant_type=refresh_token&refresh_token=${refreshToken}&client_id=mibWeb`,
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
     },
   })
     .then((res) => res.json())
     .then((value) => {
-      console.log("refreshToken", value);
       const data = value as TokenResponse;
+      
+      if (!data.access_token) {
+        console.error(data);
+      }
 
       setTokenData(data);
 

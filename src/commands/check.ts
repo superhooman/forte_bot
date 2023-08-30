@@ -6,7 +6,10 @@ import fetch from "node-fetch";
 import { CardsEntity, CardsRequest } from "../types";
 import { getToken, refreshToken } from "../tokens";
 
-const getData = async (token: string): Promise<CardsEntity | undefined> => {
+const getData = async (token: string, i: number): Promise<CardsEntity | undefined> => {
+    if (i > 3) {
+      return undefined;
+    }
     return await fetch("https://anthill-api.fortebank.com/v1/cards", {
       headers: {
         "X-Jwt-Access-Token": token,
@@ -20,10 +23,10 @@ const getData = async (token: string): Promise<CardsEntity | undefined> => {
       .then(async (data) => {
         const error = (data as { system: 'ANTHILL', status: number });
         if (error.system === 'ANTHILL') {
-            console.log('error', error);
+            console.error('getData error', error);
             const newToken = (await refreshToken()).access_token;
 
-            return await getData(newToken);
+            return await getData(newToken, i + 1);
         }
         const card = (data as CardsRequest).cards?.find(
           (card) => card.cardExternalId === env.CARD_ID
@@ -44,13 +47,13 @@ export const check = (bot: Telegraf<BaseBotContext>) => {
     await ctx.telegram.sendChatAction(chatId, "typing");
 
     const token = getToken('access_token');
-    const card = await getData(token);
+    const card = await getData(token, 0);
 
     const message = card?.availableBalances?.map((balance) => {
         const { currency, amount } = balance;
     
         return `<b>${currency}</b>: ${formatCurrency(amount)}`;
-    }).join('\n') ?? 'No data :(';
+    }).join('\n') ?? 'No data :(\nContact agashka';
 
     await ctx.reply(message, { parse_mode: "HTML" });
   });
